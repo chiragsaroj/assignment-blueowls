@@ -33,7 +33,8 @@ export default function App() {
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/patients" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/payments" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path="/appointments" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path="/users" element={<ProtectedRoute><Home /></ProtectedRoute>} />
     </Routes>
     </>
   )

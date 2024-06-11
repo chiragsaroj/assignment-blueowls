@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Separator } from '@/components/ui/separator';
 
 export default function Login() {
   const signIn = useSignIn();
@@ -34,17 +33,15 @@ export default function Login() {
       return true 
     },
     onSuccess: (data)=>{
-
       if(signIn({
         auth: {
-          token: "b09c6e71392e190e0a51e74616991a0612091dd441ff",
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE3MTgyMTE4NjR9.9YMtwmJDflVPD8s1lsTCXcEmnVBMznK-qfZpPXiP6RY",
           type: 'Bearer'
         },
-        userState: {
-          email: "admin@example.com",
-        }
+        // userState: {
+        //   email: "admin@example.com",
+        // }
       })){
-        // Redirect or do-something
         toast.success('Login successful')
         navigate('/dashboard')
       }else{
@@ -54,34 +51,20 @@ export default function Login() {
   })
 
   function onSubmit(values: {email: string, password: string}) {
-    // loginMutation.mutate()
-    if(signIn({
-      auth: {
-        token: "cbsdhujbjcbjsbcjsb",
-        type: 'Bearer'
-      },
-      userState: {
-        email: "admin@example.com",
-      }
-    })){
-      // Redirect or do-something
-      toast.success('Login successful')
-      navigate('/')
-    }else{
-      //Throw error 
-    }
+    loginMutation.mutate()
   }
 
   return (
-    <main className='relative flex flex-col justify-center items-center h-screen p-10 bg-[#2e5382]'>
+    <main className='relative flex flex-col justify-center items-center h-screen p-10 bg-slate-200'>
       <Card className="w-full max-w-xl p-4">
+      <img className='mx-auto rounded-full p-4 bg-white' src="/logo.jpeg" alt='logo' width={120} height={120} />
         <form>
-          <CardHeader>
+          {/* <CardHeader className='text-center'>
             <CardTitle className="text-2xl">Login</CardTitle>
             <CardDescription>
               Enter your email below to login to your account.
             </CardDescription>
-          </CardHeader>
+          </CardHeader> */}
           <CardContent className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
@@ -92,13 +75,10 @@ export default function Login() {
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" {...register("password", { required: "Password is required" })} />
               <span className='text-xs text-red-500'>{errors.password?.message}</span>
-              {/* <div className='flex justify-end'>
-                <Button type='button' variant="link" className='text-blue-600' onClick={()=>navigate('/password-reset')}>Forgot Password</Button>
-              </div> */}
             </div>
           </CardContent>
           <CardFooter className='flex flex-col gap-5'>
-            <Button type='submit' className="w-full" 
+            <Button type='submit' className="w-full bg-[#2e5382] hover:bg-[#36629d]" 
             onClick={handleSubmit(onSubmit)} 
             >Log in</Button>
           </CardFooter>
