@@ -6,3 +6,4 @@ python-multipart
 SQLAlchemy
 passlib
 jwt
+ipdb

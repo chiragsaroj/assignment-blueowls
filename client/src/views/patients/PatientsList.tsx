@@ -10,7 +10,7 @@ function PatientsList() {
       <div className='flex justify-between items-center'>
         <div className='w-full grid gap-2 text-slate-800'>
           <Label>Search</Label>
-          <Input className='max-w-md rounded-none border-slate-400' />
+          <Input className='max-w-md border-slate-400' />
         </div>
         <Link to="/patient/new">
           <Button className='rounded-none bg-[#2e5382] hover:bg-[#36629d]'>New Patient</Button>
@@ -62,11 +62,14 @@ function PatientsList() {
                     18
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                      {/* <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                           Male
-                      </span> */}
+                      </span>
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">
                           Female
+                      </span>
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                          Other
                       </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

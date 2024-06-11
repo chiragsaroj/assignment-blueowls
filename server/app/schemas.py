@@ -35,3 +35,33 @@ class TokenData(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class PatientGender(str, Enum):
+    male = "male"
+    female = "female"
+    other = "other"
+
+class PatientCreate(BaseModel):
+    name: str
+    age: int
+    email: str
+    mobile_number: str
+    gender: PatientGender
+
+class PatientUpdate(BaseModel):
+    name: Optional[str] = None
+    age: Optional[int] = None
+    email: Optional[str] = None
+    mobile_number: Optional[str] = None
+    gender: Optional[PatientGender] = None
+
+class PatientResponse(BaseModel):
+    id: int
+    name: str
+    age: int
+    email: str
+    mobile_number: str
+    gender: PatientGender
+
+    class Config:
+        from_attributes = True
