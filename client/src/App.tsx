@@ -7,6 +7,7 @@ import PatientsList from "./views/patients/PatientsList"
 import CreatePatient from "./views/patients/CreatePatient"
 import AppSidebar from "./components/base/AppSidebar"
 import AppointmentList from "./views/appointments/AppointmentList"
+import EditPatient from "./views/patients/EditPatient"
 
 const ProtectedRoute = ({children}: {children: ReactElement})=>{
   return(
@@ -40,6 +41,7 @@ export default function App() {
       <Route path="/dashboard" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       {/* Patients */}
       <Route path="/patients" element={<ProtectedRoute><PatientsList /></ProtectedRoute>} />
+      <Route path="/patient/edit/:id" element={<ProtectedRoute><EditPatient /></ProtectedRoute>} />
       <Route path="/patient/new" element={<ProtectedRoute><CreatePatient /></ProtectedRoute>} />
 
       {/* Appointments */}

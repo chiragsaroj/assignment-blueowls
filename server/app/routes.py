@@ -10,7 +10,7 @@ from app.database import get_db
 
 router = APIRouter()
 
-@router.get("/patients/", response_model=List[schemas.PatientResponse])
+@router.get("/patients", response_model=List[schemas.PatientResponse])
 async def list_patients(db: Session = Depends(get_db)):
     patients = db.query(models.Patient).all()
     return patients
