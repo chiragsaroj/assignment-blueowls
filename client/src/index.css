@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.css-dip3t8 {
+  background: rgb(28, 61, 104) !important;
+  border: none !important;
+  color: white !important;
+}
+.css-1tqrhto > .ps-menu-button {
+  background-color: #285694ff !important;
+  color: white !important;
+}
+
+.css-1t8x7v1 > .ps-menu-button:hover {
+  background-color: rgb(20, 50, 92) !important;
+  color: white !important;
+}
+
+.css-16jesut > .ps-menu-button:hover {
+  background-color: rgb(20, 50, 92) !important;
+  color: white !important;
+}
+
+/* .mantine-Stepper-stepIcon{
+  display: none !important
+} */
