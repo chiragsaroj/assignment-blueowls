@@ -3,11 +3,17 @@ import RequireAuth from '@auth-kit/react-router/RequireAuth'
 import { ReactElement } from "react"
 import Home from "./views/Home"
 import Login from "./views/Login"
+import PatientsList from "./views/patients/PatientsList"
+import CreatePatient from "./views/patients/CreatePatient"
+import AppSidebar from "./components/base/AppSidebar"
+import AppointmentList from "./views/appointments/AppointmentList"
 
 const ProtectedRoute = ({children}: {children: ReactElement})=>{
   return(
     <RequireAuth fallbackPath={'/login'}>
-      {children}
+      <AppSidebar>
+        {children}
+      </AppSidebar>
     </RequireAuth>
   )
 }
@@ -32,8 +38,14 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/patients" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/appointments" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      {/* Patients */}
+      <Route path="/patients" element={<ProtectedRoute><PatientsList /></ProtectedRoute>} />
+      <Route path="/patient/new" element={<ProtectedRoute><CreatePatient /></ProtectedRoute>} />
+
+      {/* Appointments */}
+      <Route path="/appointments" element={<ProtectedRoute><AppointmentList /></ProtectedRoute>} />
+      <Route path="/appointment/new" element={<ProtectedRoute><AppointmentList /></ProtectedRoute>} />
+
       <Route path="/users" element={<ProtectedRoute><Home /></ProtectedRoute>} />
     </Routes>
     </>

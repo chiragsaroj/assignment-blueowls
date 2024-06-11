@@ -22,7 +22,7 @@ export default function AppSidebar({children}: {children: ReactNode}) {
       <Menu className='text-[15px]'>
         <MenuItem component={<Link to='/patients'></Link>}>Patients</MenuItem>
         <MenuItem component={<Link to='/appointments'></Link>}>Appointments</MenuItem>
-        <MenuItem component={<Link to='/users'></Link>}>Users</MenuItem>
+        {/* <MenuItem component={<Link to='/users'></Link>}>Users</MenuItem> */}
         {/* <SubMenu label="Metrics">
           <MenuItem component={<Link to='/metrics'></Link>}>All Metrics</MenuItem>
           <MenuItem component={<Link to='/brand_metrics'></Link>}>Brand Wise Metrics</MenuItem>
