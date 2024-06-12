@@ -74,7 +74,7 @@ class PaymentStatus(str, Enum):
 
 class AppointmentBase(BaseModel):
     appointment_date: datetime
-    payment_status: PaymentStatus
+    payment_status: Optional[PaymentStatus] = PaymentStatus.pending
     note: str
     payment_link: Optional[str] = None
     amount: float
