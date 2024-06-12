@@ -3,13 +3,40 @@ from typing import Optional
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+import stripe
+import ipdb
 
 SECRET_KEY = "YOUR_SECRET_KEY"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_HOURS = 24
 
+STRIPE_API_KEY = "sk_test_tR3PYbcVNZZ796tH88S4VQ2u"
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+stripe.api_key = STRIPE_API_KEY
+
+def generate_payment_link(amount: float, appointment_id: int) -> str:
+    # Convert amount to cents
+    stripe_amount = int(amount * 100)
+    
+    # Create a product for the appointment
+    product = stripe.Product.create(name=f"Appointment Number: {appointment_id}")
+    
+    # Create a price object for the product
+    price = stripe.Price.create(
+        currency="usd",
+        unit_amount=stripe_amount,
+        product=product.id
+    )
+    
+    # Create a payment link for the price
+    link = stripe.PaymentLink.create(
+        line_items=[{"price": price.id, "quantity": 1}],
+        after_completion={"type": "redirect", "redirect": {"url": "http://localhost:5173/payment_success"}}
+    )
+    
+    return link
 
 def get_password_hash(password: str):
     return pwd_context.hash(password)

@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from enum import Enum
+from datetime import datetime
 
 
 class UserType(str, Enum):
@@ -64,4 +65,30 @@ class PatientResponse(BaseModel):
     gender: PatientGender
 
     class Config:
+        from_attributes = True
+
+
+class PaymentStatus(str, Enum):
+    pending = "pending"
+    paid = "paid"
+
+class AppointmentBase(BaseModel):
+    appointment_date: datetime
+    payment_status: PaymentStatus
+    note: str
+    payment_link: Optional[str] = None
+    amount: float
+
+    class Config:
+        arbitrary_types_allowed = True
+
+class AppointmentCreate(AppointmentBase):
+    patient_id: int
+
+class AppointmentResponse(AppointmentBase):
+    id: int
+    patient_id: int
+
+    class Config:
+        arbitrary_types_allowed = True
         from_attributes = True

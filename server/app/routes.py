@@ -10,6 +10,37 @@ from app.database import get_db
 
 router = APIRouter()
 
+@router.post("/appointments/", response_model=schemas.AppointmentResponse, status_code=status.HTTP_201_CREATED)
+async def create_appointment(appointment: schemas.AppointmentCreate, db: Session = Depends(get_db)):
+    db_patient = db.query(models.Patient).filter(models.Patient.id == appointment.patient_id).first()
+    if not db_patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    
+    db_appointment = models.Appointment(
+        appointment_date=appointment.appointment_date,
+        payment_status=appointment.payment_status,
+        note=appointment.note,
+        amount=appointment.amount,
+        patient_id=appointment.patient_id
+    )
+    
+    db.add(db_appointment)
+    db.commit()
+    db.refresh(db_appointment)
+
+    payment_link = security.generate_payment_link(appointment.amount, db_appointment.id)
+    db_appointment.payment_link = payment_link.url
+    
+    db.commit()
+    db.refresh(db_appointment)
+    
+    return db_appointment
+
+@router.get("/strip_test")
+async def stripe_payment_link():
+
+    return link
+
 @router.get("/patients", response_model=List[schemas.PatientResponse])
 async def list_patients(name: Optional[str] = Query(None), db: Session = Depends(get_db)):
     if name:
