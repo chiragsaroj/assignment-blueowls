@@ -9,7 +9,13 @@ export default function UseAppointments() {
     return res.data
   }
 
+  const getAppointments = async ()=>{
+    const res = await api.get('appointments')
+    return res.data
+  }
+
   return {
-    createAppointment
+    createAppointment,
+    getAppointments
   }
 }

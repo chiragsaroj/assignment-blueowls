@@ -33,7 +33,8 @@ function PatientForm({
     age: "",
     email: "",
     mobile_number: ""
-  }
+  },
+  edit = false
 }) {
   const { createPatient } = UsePatients()
   const navigate = useNavigate()
@@ -56,7 +57,11 @@ function PatientForm({
   })
 
   const onSubmit = (data)=>{
-    createPatientMutation.mutate(data)
+    if(edit){
+      console.log(data)
+    }else{
+      createPatientMutation.mutate(data)
+    }
   }
 
   return (

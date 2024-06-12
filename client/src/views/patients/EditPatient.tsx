@@ -17,7 +17,7 @@ function EditPatient() {
 
   return (
     <main className='p-10'>
-      <PatientForm defaultValues={data} />
+      <PatientForm defaultValues={data} edit={true} />
     </main>
   )
 }

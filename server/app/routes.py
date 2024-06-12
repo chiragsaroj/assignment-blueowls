@@ -10,7 +10,12 @@ from app.database import get_db
 
 router = APIRouter()
 
-@router.post("/appointments/", response_model=schemas.AppointmentResponse, status_code=status.HTTP_201_CREATED)
+@router.get("/appointments", response_model=List[schemas.AppointmentResponse])
+def list_appointments(db: Session = Depends(get_db)):
+    appointments = db.query(models.Appointment).all()
+    return appointments
+
+@router.post("/appointments", response_model=schemas.AppointmentResponse, status_code=status.HTTP_201_CREATED)
 async def create_appointment(appointment: schemas.AppointmentCreate, db: Session = Depends(get_db)):
     db_patient = db.query(models.Patient).filter(models.Patient.id == appointment.patient_id).first()
     if not db_patient:
@@ -18,7 +23,7 @@ async def create_appointment(appointment: schemas.AppointmentCreate, db: Session
     
     db_appointment = models.Appointment(
         appointment_date=appointment.appointment_date,
-        payment_status=appointment.payment_status,
+        payment_status="pending",
         note=appointment.note,
         amount=appointment.amount,
         patient_id=appointment.patient_id

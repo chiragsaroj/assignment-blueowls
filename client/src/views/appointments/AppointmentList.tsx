@@ -1,10 +1,18 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import UseAppointments from '@/services/UseAppointments'
+import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 function AppointmentList() {
+  const { getAppointments } = UseAppointments()
+  const { data, status, isLoading, isFetching } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: getAppointments
+})
   return (
     <main>
       <div className='flex justify-end items-center'>
@@ -14,7 +22,8 @@ function AppointmentList() {
       </div>
 
       <section className='mt-10'>
-        <table className="min-w-full divide-y divide-gray-200 overflow-x-auto">
+        <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
               <tr>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -24,10 +33,10 @@ function AppointmentList() {
                       Appointment Date
                   </th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Payment Status
+                      Amount
                   </th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Note
+                      Payment Status
                   </th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Payment Link
@@ -38,11 +47,12 @@ function AppointmentList() {
               </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
+            {data?.map((a)=>(
               <tr>
                   <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
-                              <img className="h-10 w-10 rounded-full" src="https://i.pravatar.cc/150?img=1" alt="" />
+                            <img className="h-10 w-10 rounded-full" src="/avatar.jpeg" alt="" />
                           </div>
                           <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
@@ -55,32 +65,49 @@ function AppointmentList() {
                       </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {Date.now()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          Paid
-                      </span>
-                      {/* <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                          Pending
-                      </span> */}
-                  </td>
-                  <td className="px-6 my-4 whitespace-nowrap text-sm text-gray-500 max-w-80 text-wrap line-clamp-4">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus consequuntur sequi quo quos corporis magnam omnis nemo natus architecto, eligendi odio maxime tempore incidunt iusto voluptate rerum, porro aliquid eveniet.
+                    {moment(a.appointment_date).format('dddd, MMMM D, YYYY h:mm A')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    https://docs.stripe.com/test-mode
+                    $ {a.amount}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <StatusBadge payment_status={a.payment_status} />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-500 hover:underline">
+                    <Link target='_blank' to={a.payment_link}>{a.payment_link}</Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit</a>
-                      <a href="#" className="ml-2 text-red-600 hover:text-red-900">Delete</a>
+                    <span className="text-cyan-600 hover:text-cyan-900 cursor-pointer">View</span>
                   </td>
               </tr>
+              ))}
             </tbody>
         </table>
+        </div>
       </section>
     </main>
   )
 }
 
 export default AppointmentList
+
+function StatusBadge({payment_status}){
+  switch (payment_status) {
+      case "paid":
+          return (
+            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+              Paid
+            </span>
+          )
+
+      case "pending":
+          return (
+            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+              Pending
+            </span> 
+          )
+  
+      default:
+          break;
+  }
+}

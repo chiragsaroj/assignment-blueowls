@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader } from "@mantine/core";
 
 const formSchema = z.object({
   appointment_date: z.string().min(1, { message: "This field has to be filled." }),
@@ -54,6 +55,11 @@ export default function AppointmentForm({defaultValues = {
   })
 
   const onSubmit = (data)=>{
+    // let obj = {
+    //   ...data,
+    //   amount: parseInt(data.amount),
+    //   patient_id: parseInt(data.patient_id)
+    // }
     createAppointmentMutation.mutate(data)
   }
 
@@ -130,7 +136,7 @@ export default function AppointmentForm({defaultValues = {
           )}
           />
           <div className="flex gap-3 justify-end">
-            <Button className="mt-4 w-32" type="submit">Submit</Button>
+            <Button disabled={createAppointmentMutation?.isPending} className="mt-4 w-32" type="submit">{createAppointmentMutation.isPending ? <Loader size={"sm"} color="white" /> : "Submit"}</Button>
           </div>
         </form>
       </CardContent>
