@@ -10,6 +10,7 @@ import AppointmentList from "./views/appointments/AppointmentList"
 import EditPatient from "./views/patients/EditPatient"
 import AppointmentCreate from "./views/appointments/AppointmentCreate"
 import PatientAppointmentView from "./views/appointments/PatientAppointmentView"
+import PaymentSuccess from "./views/PaymentSuccess"
 
 const ProtectedRoute = ({children}: {children: ReactElement})=>{
   return(
@@ -28,6 +29,9 @@ export default function App() {
       {/* ----Public Routes Ends Here---- */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/payment_success/:id" element={<PaymentSuccess />} />
+
+
       <Route path="/dashboard" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       {/* Patients */}
       <Route path="/patients" element={<ProtectedRoute><PatientsList /></ProtectedRoute>} />

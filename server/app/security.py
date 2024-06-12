@@ -33,7 +33,7 @@ def generate_payment_link(amount: float, appointment_id: int) -> str:
     # Create a payment link for the price
     link = stripe.PaymentLink.create(
         line_items=[{"price": price.id, "quantity": 1}],
-        after_completion={"type": "redirect", "redirect": {"url": "http://localhost:5173/payment_success"}}
+        after_completion={"type": "redirect", "redirect": {"url": f"http://localhost:5173/payment_success/{appointment_id}"}}
     )
     
     return link

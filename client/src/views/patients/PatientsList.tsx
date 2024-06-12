@@ -111,7 +111,7 @@ function PatientsList() {
 export default PatientsList
 
 
-function GenderBadge({gender}){
+export function GenderBadge({gender}){
     switch (gender) {
         case "male":
             return (

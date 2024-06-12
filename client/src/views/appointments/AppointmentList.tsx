@@ -91,7 +91,7 @@ function AppointmentList() {
 
 export default AppointmentList
 
-function StatusBadge({payment_status}){
+export function StatusBadge({payment_status}){
   switch (payment_status) {
       case "paid":
           return (
