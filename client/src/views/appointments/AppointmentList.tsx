@@ -8,7 +8,7 @@ function AppointmentList() {
   return (
     <main>
       <div className='flex justify-end items-center'>
-        <Link to="/patient/new">
+        <Link to="/appointment/new">
           <Button className='rounded-none bg-[#2e5382] hover:bg-[#36629d]'>New Appointment</Button>
         </Link>
       </div>
