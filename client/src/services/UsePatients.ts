@@ -14,8 +14,10 @@ export default function UsePatients() {
     return res.data
   }
 
-  const patientList = async ()=>{
-    const res = await api.get('patients')
+  const patientList = async ({ queryKey })=>{
+    let searchName = queryKey[1] || null
+    const url = searchName ? `patients?name=${searchName}` : "patients";
+    const res = await api.get(url)
     return res.data
   }
 

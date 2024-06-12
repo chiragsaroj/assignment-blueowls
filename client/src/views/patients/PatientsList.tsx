@@ -3,14 +3,18 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import UsePatients from '@/services/UsePatients'
+import { Loader } from '@mantine/core'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDebounceCallback } from 'usehooks-ts'
 
 function PatientsList() {
+    const [searchName, setSearchName] = useState('')
     const queryClient = useQueryClient()
     const { patientList, deletePatient } = UsePatients()
-    const { data, status } = useQuery({
-        queryKey: ["patients"],
+    const { data, status, isLoading, isFetching } = useQuery({
+        queryKey: ["patients", searchName],
         queryFn: patientList
     })
 
@@ -21,12 +25,15 @@ function PatientsList() {
         }
     })
 
+    const debounced = useDebounceCallback(setSearchName, 500)
+
   return (
-    <main>
+    <main className='relative min-h-screen'>
+      {isLoading && <Loader className='absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ' color='#36629d' />}
       <div className='flex justify-between items-center'>
-        <div className='w-full grid gap-2 text-slate-800'>
+        <div className='relative max-w-lg w-full grid gap-2 text-slate-800'>
           <Label>Search</Label>
-          <Input className='max-w-md rounded-none border-slate-400' />
+          <Input className='max-w-md border-slate-400' defaultValue={searchName} onChange={event => debounced(event.target.value)} />
         </div>
         <Link to="/patient/new">
           <Button className='rounded-none bg-[#2e5382] hover:bg-[#36629d]'>New Patient</Button>

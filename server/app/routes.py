@@ -1,9 +1,9 @@
 from datetime import timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 
 from app import auth, models, schemas, security
 from app.database import get_db
@@ -11,8 +11,11 @@ from app.database import get_db
 router = APIRouter()
 
 @router.get("/patients", response_model=List[schemas.PatientResponse])
-async def list_patients(db: Session = Depends(get_db)):
-    patients = db.query(models.Patient).all()
+async def list_patients(name: Optional[str] = Query(None), db: Session = Depends(get_db)):
+    if name:
+        patients = db.query(models.Patient).filter(models.Patient.name.ilike(f"%{name}%")).all()
+    else: 
+        patients = db.query(models.Patient).all()
     return patients
 
 @router.get("/patients/{patient_id}", response_model=schemas.PatientResponse)
