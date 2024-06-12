@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 
 from app import auth, models, schemas, security
@@ -10,9 +10,16 @@ from app.database import get_db
 
 router = APIRouter()
 
+@router.get("/patient-appointment/{patient_id}", response_model=schemas.PatientAppointmentResponse)
+def get_patient_appointments(patient_id: int, db: Session = Depends(get_db)):
+    patient = db.query(models.Patient).options(joinedload(models.Patient.appointments)).filter(models.Patient.id == patient_id).first()
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    return patient
+
 @router.get("/appointments", response_model=List[schemas.AppointmentResponse])
 def list_appointments(db: Session = Depends(get_db)):
-    appointments = db.query(models.Appointment).all()
+    appointments = db.query(models.Appointment).join(models.Patient).all()
     return appointments
 
 @router.post("/appointments", response_model=schemas.AppointmentResponse, status_code=status.HTTP_201_CREATED)
@@ -135,21 +142,21 @@ async def login_for_access_token(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-# @router.post("/register/", response_model=schemas.UserInDBBase)
-# async def register(user_in: schemas.UserIn, db: Session = Depends(get_db)):
-#     db_user = auth.get_user(db, username=user_in.username)
-#     if db_user:
-#         raise HTTPException(status_code=400, detail="Username already registered")
-#     db_user = db.query(models.User).filter(models.User.email == user_in.email).first()
-#     if db_user:
-#         raise HTTPException(status_code=400, detail="Email already registered")
+@router.post("/register/", response_model=schemas.UserInDBBase)
+async def register(user_in: schemas.UserIn, db: Session = Depends(get_db)):
+    db_user = auth.get_user(db, username=user_in.username)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Username already registered")
+    db_user = db.query(models.User).filter(models.User.email == user_in.email).first()
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
 
-#     hashed_password = security.get_password_hash(user_in.password)
-#     db_user = models.User(**user_in.dict(exclude={"password"}), hashed_password=hashed_password)
-#     db.add(db_user)
-#     db.commit()
-#     db.refresh(db_user)
-#     return db_user
+    hashed_password = security.get_password_hash(user_in.password)
+    db_user = models.User(**user_in.dict(exclude={"password"}), hashed_password=hashed_password)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 # @router.get("/conversation/")
 # async def read_conversation(

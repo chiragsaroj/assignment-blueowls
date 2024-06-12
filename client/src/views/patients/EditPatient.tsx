@@ -17,7 +17,7 @@ function EditPatient() {
 
   return (
     <main className='p-10'>
-      <PatientForm defaultValues={data} edit={true} />
+      <PatientForm defaultValues={{...data, age: data?.age?.toString()}} edit={true} />
     </main>
   )
 }

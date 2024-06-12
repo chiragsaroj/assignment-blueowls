@@ -9,6 +9,11 @@ export default function UsePatients() {
     return res.data
   }
 
+  const updatePatient = async({id, obj})=>{
+    const res = await api.put(`patients/${id}`, obj)
+    return res.data
+  }
+
   const getPatient = async ({ queryKey })=>{
     const res = await api.get(`patients/${queryKey[1]}`)
     return res.data
@@ -28,6 +33,7 @@ export default function UsePatients() {
 
   return {
     patientList,
+    updatePatient,
     createPatient,
     getPatient,
     deletePatient

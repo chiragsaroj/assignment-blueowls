@@ -56,10 +56,10 @@ function AppointmentList() {
                           </div>
                           <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
-                                  Jane Cooper
+                                {a.patient.name}
                               </div>
                               <div className="text-sm text-gray-500">
-                                  jane.cooper@example.com
+                                {a.patient.email}
                               </div>
                           </div>
                       </div>
@@ -77,7 +77,7 @@ function AppointmentList() {
                     <Link target='_blank' to={a.payment_link}>{a.payment_link}</Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium">
-                    <span className="text-cyan-600 hover:text-cyan-900 cursor-pointer">View</span>
+                  <Link to={`/patient-appointment/view/${a.patient.id}`} className="text-cyan-600 hover:text-cyan-900 cursor-pointer">View</Link>
                   </td>
               </tr>
               ))}

@@ -95,9 +95,9 @@ function PatientsList() {
                     {p.email}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium">
-                      <span className="text-cyan-600 hover:text-cyan-900 cursor-pointer">View</span>
-                      <Link to={`/patient/edit/${p.id}`} className="ml-2 text-indigo-600 hover:text-indigo-900 ">Edit</Link>
-                      <span className="ml-2 text-red-600 hover:text-red-900 cursor-pointer" onClick={()=>deletePatientMutation.mutate(p.id)}>Delete</span>
+                    <Link to={`/patient-appointment/view/${p.id}`} className="text-cyan-600 hover:text-cyan-900 cursor-pointer">View</Link>
+                    <Link to={`/patient/edit/${p.id}`} className="ml-2 text-indigo-600 hover:text-indigo-900 ">Edit</Link>
+                    {/* <span className="ml-2 text-red-600 hover:text-red-900 cursor-pointer" onClick={()=>deletePatientMutation.mutate(p.id)}>Delete</span> */}
                   </td>
               </tr>
             ))}

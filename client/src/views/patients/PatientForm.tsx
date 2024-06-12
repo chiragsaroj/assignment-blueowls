@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import UsePatients from "@/services/UsePatients";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const formSchema = z.object({
@@ -36,8 +36,9 @@ function PatientForm({
   },
   edit = false
 }) {
-  const { createPatient } = UsePatients()
+  const { createPatient, updatePatient } = UsePatients()
   const navigate = useNavigate()
+  const params = useParams()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,9 +57,20 @@ function PatientForm({
     },
   })
 
+  const updatePatientMutation = useMutation({
+    mutationFn: updatePatient,
+    onSuccess: async (data)=>{
+      navigate('/patients')
+      toast.success("Patient updated successfully")
+    },
+    onError(error: any, variables, context) {
+      toast.error(error.response.data.detail)
+    },
+  })
+
   const onSubmit = (data)=>{
     if(edit){
-      console.log(data)
+      updatePatientMutation.mutate({ id: params.id, obj: data })
     }else{
       createPatientMutation.mutate(data)
     }

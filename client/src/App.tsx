@@ -9,6 +9,7 @@ import AppSidebar from "./components/base/AppSidebar"
 import AppointmentList from "./views/appointments/AppointmentList"
 import EditPatient from "./views/patients/EditPatient"
 import AppointmentCreate from "./views/appointments/AppointmentCreate"
+import PatientAppointmentView from "./views/appointments/PatientAppointmentView"
 
 const ProtectedRoute = ({children}: {children: ReactElement})=>{
   return(
@@ -24,26 +25,15 @@ export default function App() {
   return (
     <>
      <Routes>
-      {/* ----Protected Routes---- */}
-      {/* <Route path="/configurations" element={<ProtectedRoute><ConfigurationList /></ProtectedRoute>} />
-      <Route path="/configuration/new" element={<ProtectedRoute><Test /></ProtectedRoute>} />
-      <Route path="/configuration/edit/:id" element={<ProtectedRoute><TestEdit /></ProtectedRoute>} />
-      <Route path="/configuration/view/:id" element={<ProtectedRoute><ViewConfiguration /></ProtectedRoute>} /> */}
-      {/* ----Protected Routes Ends Here---- */}
-      {/* ----Public Routes---- */}
-      {/* <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/password-reset" element={<PasswordReset />} />
-      <Route path="/walkthrough" element={<Walkthrough />} /> */}
       {/* ----Public Routes Ends Here---- */}
-      <Route path="/login" element={<Login />} />
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       {/* Patients */}
       <Route path="/patients" element={<ProtectedRoute><PatientsList /></ProtectedRoute>} />
       <Route path="/patient/edit/:id" element={<ProtectedRoute><EditPatient /></ProtectedRoute>} />
       <Route path="/patient/new" element={<ProtectedRoute><CreatePatient /></ProtectedRoute>} />
+      <Route path="/patient-appointment/view/:id" element={<ProtectedRoute><PatientAppointmentView /></ProtectedRoute>} />
 
       {/* Appointments */}
       <Route path="/appointments" element={<ProtectedRoute><AppointmentList /></ProtectedRoute>} />

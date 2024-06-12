@@ -1,17 +1,17 @@
 from pydantic import BaseModel, ConfigDict
-from typing import Optional
+from typing import Optional, List
 from enum import Enum
 from datetime import datetime
 
 
 class UserType(str, Enum):
-    patient = "patient"
+    admin = "admin"
     super_admin = "super_admin"
 
 class UserBase(BaseModel):
     email: str
     username: str
-    type: UserType = UserType.patient
+    type: UserType = UserType.admin
 
 
 class UserIn(UserBase):
@@ -87,8 +87,15 @@ class AppointmentCreate(AppointmentBase):
 
 class AppointmentResponse(AppointmentBase):
     id: int
-    patient_id: int
+    # patient_id: int
+    patient: PatientResponse
 
     class Config:
         arbitrary_types_allowed = True
         from_attributes = True
+
+class AppointmentPatientResponse(AppointmentBase):
+    id: int
+    
+class PatientAppointmentResponse(PatientResponse):
+    appointments: List[AppointmentPatientResponse]

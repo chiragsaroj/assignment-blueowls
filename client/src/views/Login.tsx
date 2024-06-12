@@ -35,7 +35,7 @@ export default function Login() {
     onSuccess: (data)=>{
       if(signIn({
         auth: {
-          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE3MTgyMTE4NjR9.9YMtwmJDflVPD8s1lsTCXcEmnVBMznK-qfZpPXiP6RY",
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcxODI5ODUzOX0.B51C54M3OHA9dLBTQ4AwC8LA1cevojH-OT-r1MN6zNk",
           type: 'Bearer'
         },
         // userState: {
