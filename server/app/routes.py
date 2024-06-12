@@ -36,10 +36,6 @@ async def create_appointment(appointment: schemas.AppointmentCreate, db: Session
     
     return db_appointment
 
-@router.get("/strip_test")
-async def stripe_payment_link():
-
-    return link
 
 @router.get("/patients", response_model=List[schemas.PatientResponse])
 async def list_patients(name: Optional[str] = Query(None), db: Session = Depends(get_db)):
