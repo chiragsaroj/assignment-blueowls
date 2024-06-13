@@ -18,15 +18,3 @@ fi
 # Start the Flask server
 echo "Starting Flask server..."
 uvicorn main:app --port 8000 || { echo "FastApi run failed"; exit 1; }
-
-
-curl -X 'POST' \
-  'http://127.0.0.1:8000/register/' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "email": "admin@example.com",
-  "username": "admin",
-  "type": "admin",
-  "password": "password"
-}'
