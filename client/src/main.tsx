@@ -30,7 +30,7 @@ const queryClient = new QueryClient({
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Auth0Provider
       domain="dev-fe1di176hoh8sxzg.us.auth0.com"
       clientId="wBadgQkHnKChwzsI9zeC3tspQBfQHObw"
@@ -52,5 +52,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </QueryClientProvider>
       </AuthProvider>
     </Auth0Provider>
-  </React.StrictMode>,
+  // </React.StrictMode>
+  ,
 )

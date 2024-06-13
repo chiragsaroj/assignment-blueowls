@@ -6,20 +6,25 @@ import { StatusBadge } from './appointments/AppointmentList';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { GenderBadge } from './patients/PatientsList';
+import { Loader } from '@mantine/core';
 
 function Home() {
   const { user, loginWithRedirect, isAuthenticated, isLoading, logout } = useAuth0()
   const { getPatientAppointmentDetails } = UsePatients()
-  const { data, isSuccess, isError } = useQuery({
+  const { data, isSuccess, isError, isPending } = useQuery({
     queryKey: ["patient_details", user?.email],
     queryFn: getPatientAppointmentDetails,
     enabled: !isLoading
   })
 
   return (
-    <main>
+    <main className='relative min-h-screen bg-slate-200'>
+      {isLoading && <Loader size='xl' className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' />}
       <header className="h-12 bg-[#2e5382] flex items-center justify-between px-20">
-        <Link to="/dashboard" className='bg-white shadow rounded px-10 py-1 font-medium text-sm'>Go to Admin Panel</Link>
+        <Link to="/dashboard" className='bg-white shadow rounded px-10 py-1 font-medium text-sm'>
+          Go to Admin Panel
+        </Link>
+        <div className='text-white text-xl font-semibold'>Patient Detail View</div>
         {!isLoading && 
           <>
           {isAuthenticated ? (
@@ -47,7 +52,7 @@ function Home() {
         <div className='flex justify-center mt-[20%] h-full text-xl font-medium'>Patient Not Found</div>
       ) : ""}
 
-      {isSuccess && 
+      {isSuccess && isAuthenticated && !isLoading ? (
         <section className='p-10'>
           <Card>
             <CardHeader>
@@ -65,7 +70,7 @@ function Home() {
 
           <section className='mt-10'>
             <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-gray-200 rounded-t-md">
               <thead className="bg-gray-50">
                   <tr>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -110,7 +115,7 @@ function Home() {
             </div>
           </section>
         </section>
-      }
+      ) : ""}
     </main>
   )
 }
