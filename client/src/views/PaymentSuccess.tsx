@@ -16,11 +16,10 @@ function PaymentSuccess() {
       return res.data
     },
     onSuccess: async(data)=>{
-      navigate('/')
       toast.success("Payment Completed")
+      navigate('/')
     },
     onError: async(data)=>{
-      // navigate('/')
       toast.error("Something went wrong")
     }
   })
