@@ -10,6 +10,18 @@ from app.database import get_db
 
 router = APIRouter()
 
+@router.put("/appointments/{appointment_id}/payment-status", response_model=schemas.AppointmentResponse)
+def update_payment_status(appointment_id: int, db: Session = Depends(get_db)):
+    appointment = db.query(models.Appointment).filter(models.Appointment.id == appointment_id).first()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    appointment.payment_status = "paid"
+    db.commit()
+    db.refresh(appointment)
+    
+    return appointment
+
 @router.get("/patient-appointment", response_model=schemas.PatientAppointmentResponse)
 async def get_patient_appointments(email: str, db: Session = Depends(get_db)):
     patient = db.query(models.Patient).options(joinedload(models.Patient.appointments)).filter(models.Patient.email == email).first()

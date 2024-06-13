@@ -10,7 +10,7 @@ import { GenderBadge } from './patients/PatientsList';
 function Home() {
   const { user, loginWithRedirect, isAuthenticated, isLoading, logout } = useAuth0()
   const { getPatientAppointmentDetails } = UsePatients()
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, isError } = useQuery({
     queryKey: ["patient_details", user?.email],
     queryFn: getPatientAppointmentDetails,
     enabled: !isLoading
@@ -19,7 +19,7 @@ function Home() {
   return (
     <main>
       <header className="h-12 bg-[#2e5382] flex items-center justify-between px-20">
-        <Link to="/login" className='bg-white shadow rounded px-10 py-1 font-medium text-sm'>Go to Admin Panel</Link>
+        <Link to="/dashboard" className='bg-white shadow rounded px-10 py-1 font-medium text-sm'>Go to Admin Panel</Link>
         {!isLoading && 
           <>
           {isAuthenticated ? (
@@ -42,6 +42,10 @@ function Home() {
           </>
         }
       </header>
+
+      {isError && isAuthenticated ? (
+        <div className='flex justify-center mt-[20%] h-full text-xl font-medium'>Patient Not Found</div>
+      ) : ""}
 
       {isSuccess && 
         <section className='p-10'>

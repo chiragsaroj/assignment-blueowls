@@ -11,6 +11,7 @@ import EditPatient from "./views/patients/EditPatient"
 import AppointmentCreate from "./views/appointments/AppointmentCreate"
 import PatientAppointmentView from "./views/appointments/PatientAppointmentView"
 import PaymentSuccess from "./views/PaymentSuccess"
+import Dashboard from "./views/Dashboard"
 
 const ProtectedRoute = ({children}: {children: ReactElement})=>{
   return(
@@ -32,7 +33,7 @@ export default function App() {
       <Route path="/payment_success/:id" element={<PaymentSuccess />} />
 
 
-      <Route path="/dashboard" element={<ProtectedRoute><></></ProtectedRoute>} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       {/* Patients */}
       <Route path="/patients" element={<ProtectedRoute><PatientsList /></ProtectedRoute>} />
       <Route path="/patient/edit/:id" element={<ProtectedRoute><EditPatient /></ProtectedRoute>} />
