@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from 'react-auth-kit/AuthProvider';
+import { Auth0Provider } from '@auth0/auth0-react';
 import createStore from 'react-auth-kit/createStore';
 import { Toaster } from 'react-hot-toast';
 import {
@@ -30,18 +31,26 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AuthProvider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <StateMachineProvider>
-          {/* <DevTool /> */}
-          <BrowserRouter>
-            <MantineProvider>
-              <App />
-              <Toaster />
-            </MantineProvider>
-          </BrowserRouter>
-        </StateMachineProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+    <Auth0Provider
+      domain="dev-fe1di176hoh8sxzg.us.auth0.com"
+      clientId="wBadgQkHnKChwzsI9zeC3tspQBfQHObw"
+      authorizationParams={{
+        redirect_uri: window.location.origin
+      }}
+    >
+      <AuthProvider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <StateMachineProvider>
+            {/* <DevTool /> */}
+            <BrowserRouter>
+              <MantineProvider>
+                <App />
+                <Toaster />
+              </MantineProvider>
+            </BrowserRouter>
+          </StateMachineProvider>
+        </QueryClientProvider>
+      </AuthProvider>
+    </Auth0Provider>
   </React.StrictMode>,
 )

@@ -14,8 +14,10 @@ import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import UseAuth from '@/services/UseAuth';
 
 export default function Login() {
+  const { login } = UseAuth()
   const signIn = useSignIn();
   const navigate = useNavigate();
   const {
@@ -23,19 +25,17 @@ export default function Login() {
     handleSubmit, 
     formState: { errors }} = useForm({
     defaultValues: {
-      email: "",
+      username: "",
       password: ""
     },
   })
 
   const loginMutation = useMutation({
-    mutationFn: async()=>{ 
-      return true 
-    },
+    mutationFn: login,
     onSuccess: (data)=>{
       if(signIn({
         auth: {
-          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcxODI5ODUzOX0.B51C54M3OHA9dLBTQ4AwC8LA1cevojH-OT-r1MN6zNk",
+          token: data?.access_token,
           type: 'Bearer'
         },
         // userState: {
@@ -50,8 +50,24 @@ export default function Login() {
     }
   })
 
-  function onSubmit(values: {email: string, password: string}) {
-    loginMutation.mutate()
+  function objectToFormData(obj, form = new FormData(), namespace = '') {
+    for (let property in obj) {
+        if (obj.hasOwnProperty(property)) {
+            let formKey = namespace ? `${namespace}[${property}]` : property;
+
+            if (obj[property] !== null && typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
+                objectToFormData(obj[property], form, formKey);
+            } else {
+                form.append(formKey, obj[property]);
+            }
+        }
+    }
+    return form;
+}
+
+  function onSubmit(values: {username: string, password: string}) {
+    const formData = objectToFormData(values);
+    loginMutation.mutate(formData)
   }
 
   return (
@@ -59,17 +75,11 @@ export default function Login() {
       <Card className="w-full max-w-xl p-4">
       <img className='mx-auto rounded-full p-4 bg-white' src="/logo.jpeg" alt='logo' width={120} height={120} />
         <form>
-          {/* <CardHeader className='text-center'>
-            <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>
-              Enter your email below to login to your account.
-            </CardDescription>
-          </CardHeader> */}
           <CardContent className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="admin@example.com" {...register("email", { required: "Email is required" })} />
-              <span className='text-xs text-red-500'>{errors.email?.message}</span>
+              <Label htmlFor="username">Username</Label>
+              <Input {...register("username", { required: "Username is required" })} />
+              <span className='text-xs text-red-500'>{errors.username?.message}</span>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>

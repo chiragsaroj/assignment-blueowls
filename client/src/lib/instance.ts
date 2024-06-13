@@ -31,7 +31,7 @@ export default function useInstance() {
     (error) => {
       switch (error.response.status) {
         case 401:
-          toast.error(error.response.data.message)
+          toast.error(error.response.data.detail)
           navigate('/login')
           break;
 

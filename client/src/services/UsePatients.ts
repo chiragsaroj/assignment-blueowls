@@ -31,11 +31,17 @@ export default function UsePatients() {
     return res.data
   }
 
+  const getPatientAppointmentDetails = async ({ queryKey })=>{
+    const res = await api.get(`patient-appointment?email=${queryKey[1]}`)
+    return res.data
+  }
+
   return {
     patientList,
     updatePatient,
     createPatient,
     getPatient,
-    deletePatient
+    deletePatient,
+    getPatientAppointmentDetails
   }
 }

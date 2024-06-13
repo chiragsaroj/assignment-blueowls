@@ -10,15 +10,28 @@ from app.database import get_db
 
 router = APIRouter()
 
+@router.get("/patient-appointment", response_model=schemas.PatientAppointmentResponse)
+async def get_patient_appointments(email: str, db: Session = Depends(get_db)):
+    patient = db.query(models.Patient).options(joinedload(models.Patient.appointments)).filter(models.Patient.email == email).first()
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    return patient
+
 @router.get("/patient-appointment/{patient_id}", response_model=schemas.PatientAppointmentResponse)
-def get_patient_appointments(patient_id: int, db: Session = Depends(get_db)):
+async def get_patient_appointments(patient_id: int, db: Session = Depends(get_db), current_user: schemas.UserInDB = Depends(auth.get_current_user)):
+    if not current_user: 
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
     patient = db.query(models.Patient).options(joinedload(models.Patient.appointments)).filter(models.Patient.id == patient_id).first()
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
     return patient
 
 @router.get("/appointments", response_model=List[schemas.AppointmentResponse])
-def list_appointments(db: Session = Depends(get_db)):
+async def list_appointments(db: Session = Depends(get_db), current_user: schemas.UserInDB = Depends(auth.get_current_user)):
+    if not current_user: 
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
     appointments = db.query(models.Appointment).join(models.Patient).all()
     return appointments
 
@@ -50,7 +63,10 @@ async def create_appointment(appointment: schemas.AppointmentCreate, db: Session
 
 
 @router.get("/patients", response_model=List[schemas.PatientResponse])
-async def list_patients(name: Optional[str] = Query(None), db: Session = Depends(get_db)):
+async def list_patients(name: Optional[str] = Query(None), db: Session = Depends(get_db), current_user: schemas.UserInDB = Depends(auth.get_current_user)):
+    if not current_user: 
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
     if name:
         patients = db.query(models.Patient).filter(models.Patient.name.ilike(f"%{name}%")).all()
     else: 
@@ -58,7 +74,10 @@ async def list_patients(name: Optional[str] = Query(None), db: Session = Depends
     return patients
 
 @router.get("/patients/{patient_id}", response_model=schemas.PatientResponse)
-async def read_patient(patient_id: int, db: Session = Depends(get_db)):
+async def read_patient(patient_id: int, db: Session = Depends(get_db), current_user: schemas.UserInDB = Depends(auth.get_current_user)):
+    if not current_user: 
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
     patient = db.query(models.Patient).filter(models.Patient.id == patient_id).first()
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
@@ -86,7 +105,10 @@ async def create_patient(patient: schemas.PatientCreate, db: Session = Depends(g
 
 
 @router.put("/patients/{patient_id}", response_model=schemas.PatientResponse)
-async def update_patient(patient_id: int, patient_update: schemas.PatientUpdate, db: Session = Depends(get_db)):
+async def update_patient(patient_id: int, patient_update: schemas.PatientUpdate, db: Session = Depends(get_db), current_user: schemas.UserInDB = Depends(auth.get_current_user)):
+    if not current_user: 
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
     patient = db.query(models.Patient).filter(models.Patient.id == patient_id).first()
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")

@@ -32,7 +32,7 @@ export default function App() {
       <Route path="/payment_success/:id" element={<PaymentSuccess />} />
 
 
-      <Route path="/dashboard" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path="/dashboard" element={<ProtectedRoute><></></ProtectedRoute>} />
       {/* Patients */}
       <Route path="/patients" element={<ProtectedRoute><PatientsList /></ProtectedRoute>} />
       <Route path="/patient/edit/:id" element={<ProtectedRoute><EditPatient /></ProtectedRoute>} />
