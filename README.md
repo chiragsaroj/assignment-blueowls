@@ -47,6 +47,10 @@ password :- password
 ```
 
 #### Patient Detail View url [http://localhost:5173](http://localhost:5173)
+#### Testing Card number for Stripe Payments
+```bash
+4242 4242 4242 4242
+```
 
 # Project Screenshots
 
