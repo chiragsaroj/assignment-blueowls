@@ -7,7 +7,7 @@ cd "$SERVER_DIR" || { echo "Directory $SERVER_DIR not found"; exit 1; }
 
 # Activate virtual environment if necessary
 if [ ! -d "venv" ]; then
-  echo "Creating virtual environment and installing Flask dependencies..."
+  echo "Creating virtual environment and installing server dependencies..."
   python3 -m venv venv || { echo "Failed to create virtual environment"; exit 1; }
   source venv/bin/activate || { echo "Failed to activate virtual environment"; exit 1; }
   pip install -r requirements.txt || { echo "Failed to install Flask dependencies"; exit 1; }
